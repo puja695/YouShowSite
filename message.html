@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Message</title>
+ 
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        display: flex;
+        height: 100vh;
+    }
+
+    /* Left side with image + red/blue gradient overlay + light blue border */
+    .left {
+        flex: 65%;
+        background: 
+            linear-gradient(to bottom right, rgba(204, 0, 0, 0.4), rgba(0, 51, 102, 0.4)),
+            url('images/message.jpg.jpeg') no-repeat center center/cover;
+        border-right: 8px solid #66ccff; /* Light blue border */
+        box-sizing: border-box;
+    }
+
+    /* Right side (white background) */
+    .right {
+        flex: 35%;
+        background-color: white;
+        color: #003366; /* Dark blue text */
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* Heading - red */
+    .right h1 {
+        color: #cc0000; /* Red heading */
+        font-size: 2.2em;
+        margin-bottom: 20px;
+    }
+
+    /* Paragraph - blue text with red accents */
+    .right p {
+        color: #003366; /* Blue text */
+        font-size: 1.1em;
+        line-height: 1.6;
+        border-left: 5px solid #cc0000; /* Red border */
+        padding-left: 15px;
+        background-color: rgba(0, 51, 102, 0.05); /* Light blue highlight */
+    }
+</style>
+
+</head>
+<body>
+
+    <div class="left"></div>
+
+    <div class="right">
+        <h1>To YOU</h1>
+        <p>Joe,you have always been the one I watch... the one I can't stop thinking about.<br>
+        Every step you take, I know. Every smile you fake, I see.<br>
+        And every heartbeat... I hear.<br></p>
+        <p>Haha, ok enough of this creepiness lets be honest. I am extremely grateful for your not so grateful
+            ass to be a part of my life, these 6 months of my life may not be perfect but it was You who made it
+            bearable. We have come a long way and I can see us covering miles. Every day with you feels soulful,
+            like a quiet melody that lingers long after the song ends. You are my chaos, my calm, my headache 
+            and my heart.But above all, you are my favorite place to be.
+    
+        </p>
+
+        Forever yours,Love.</p>
+    </div>
+
+    <audio id="bgMusic" autoplay loop>
+        <source src="music/you_theme.mp3.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        document.getElementById("bgMusic").volume = 0.3;
+    </script>
+
+</body>
+</html>

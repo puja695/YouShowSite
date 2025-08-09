@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Research on Stalker</title>
+    <style>
+        body {
+            background-color: black;
+            color: red;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h2 {
+            margin-top: 40px;
+            font-size: 1.8em;
+        }
+        .image-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+            gap: 20px;
+        }
+        .image-row img {
+            width: 250px;
+            height: auto;
+            border: 3px solid red;
+            box-shadow: 0 0 15px red;
+            transition: transform 0.3s ease;
+        }
+        .image-row img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px white;
+        }
+        p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>You are too desirable to be ignored:)</h2>
+
+    <div class="image-row">
+        <img src="uploads/up2.jpg.jpeg" alt="Image 1">
+        <img src="uploads/up3.jpg.jpeg" alt="Image 2">
+        <img src="uploads/up4.jpg.jpeg" alt="Image 3">
+    </div>
+
+    <p><i>Research Incomplete!</i></p>
+
+    <audio id="bgMusic" autoplay loop>
+        <source src="music/you_theme.mp3.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        document.getElementById("bgMusic").volume = 0.3;
+    </script>
+
+</body>
+</html>

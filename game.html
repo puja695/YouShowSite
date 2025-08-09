@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quote Game</title>
+    <style>
+        body {
+            background-color: black;
+            color: red;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+        }
+        .image-container img {
+            max-width: 500px;
+            height: auto;
+            border: 3px solid red;
+        }
+        .quiz-container {
+            margin-left: 40px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: red;
+            color: black;
+            font-size: 1em;
+            padding: 10px 20px;
+            border: none;
+            margin: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background-color: white;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="image-container">
+            <img src="images/games.jpg.jpeg" alt="Game Image">
+        </div>
+
+        <div class="quiz-container">
+            <h1>Who Said It?</h1>
+            <p id="quote"></p>
+            <button onclick="guess('Love')">Love</button>
+            <button onclick="guess('Joe')">Joe</button>
+            <p id="result"></p>
+        </div>
+    </div>
+
+    <audio id="bgMusic" autoplay loop>
+        <source src="music/you_theme.mp3.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="js/game.js"></script>
+    <script>
+        document.getElementById("bgMusic").volume = 0.3;
+    </script>
+
+</body>
+</html>

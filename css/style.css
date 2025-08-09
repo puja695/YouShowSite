@@ -1,0 +1,61 @@
+body {
+    margin: 0;
+    font-family: 'Courier New', monospace;
+    background-color: black;
+    color: red;
+}
+
+h1, h2, h3, p {
+    color: red;
+}
+
+a {
+    color: red;
+    text-decoration: none;
+}
+
+button {
+    background-color: red;
+    color: black;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: darkred;
+}
+
+input, textarea {
+    background-color: black;
+    color: red;
+    border: 1px solid red;
+    padding: 8px;
+}
+
+.menu {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+}
+
+.menu div {
+    width: 30px;
+    height: 4px;
+    background-color: red;
+    margin: 6px 0;
+}
+
+.container {
+    padding: 20px;
+}
+
+#gallery img {
+    transition: transform 0.2s ease-in-out;
+}
+
+#gallery img:hover {
+    transform: scale(1.1);
+}
