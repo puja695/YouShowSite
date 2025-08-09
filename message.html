@@ -49,6 +49,16 @@
         padding-left: 15px;
         background-color: rgba(0, 51, 102, 0.05); /* Light blue highlight */
     }
+
+    /* Glitch effect */
+    .glitch-text {
+        display: inline-block;
+        animation: flicker 1.5s infinite;
+    }
+    @keyframes flicker {
+        0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+        20%, 24%, 55% { opacity: 0.1; }
+    }
 </style>
 
 </head>
@@ -58,25 +68,52 @@
 
     <div class="right">
         <h1>To YOU</h1>
-        <p>Joe,you have always been the one I watch... the one I can't stop thinking about.<br>
-        Every step you take, I know. Every smile you fake, I see.<br>
-        And every heartbeat... I hear.<br></p>
-        <p>Haha, ok enough of this creepiness lets be honest. I am extremely grateful for your not so grateful
+        <!-- First paragraph with glitch effect -->
+        <p id="glitchMessage" class="glitch-text">
+            Joe,you have always been the one I watch... the one I can't stop thinking about.<br>
+            Every step you take, I know. Every smile you fake, I see.<br>
+            And every heartbeat... I hear.<br>
+        </p>
+
+        <!-- Second paragraph stays normal -->
+        <p>
+            Haha, ok enough of this creepiness lets be honest. I am extremely grateful for your not so grateful
             ass to be a part of my life, these 6 months of my life may not be perfect but it was You who made it
             bearable. We have come a long way and I can see us covering miles. Every day with you feels soulful,
             like a quiet melody that lingers long after the song ends. You are my chaos, my calm, my headache 
-            and my heart.But above all, you are my favorite place to be.
-    
+            and my heart. But above all, you are my favorite place to be.
         </p>
 
-        Forever yours,Love.</p>
+        Forever yours, Love.
     </div>
 
     <audio id="bgMusic" autoplay loop>
         <source src="music/you_theme.mp3.mp3" type="audio/mpeg">
     </audio>
+
     <script>
         document.getElementById("bgMusic").volume = 0.3;
+
+        // Glitch effect script
+        const glitchElement = document.getElementById("glitchMessage");
+        const finalMessage = `Joe, you have always been the one I watch... the one I can't stop thinking about.
+Every step you take, I know. Every smile you fake, I see.
+And every heartbeat... I hear.`;
+        const glitchChars = "!@#$%^&*()_+{}[]<>?/|";
+
+        let i = 0;
+        const glitchInterval = setInterval(() => {
+            if (i < 20) {
+                let tempMessage = finalMessage.split("").map(char => {
+                    return Math.random() > 0.8 ? glitchChars[Math.floor(Math.random() * glitchChars.length)] : char;
+                }).join("");
+                glitchElement.textContent = tempMessage;
+                i++;
+            } else {
+                glitchElement.textContent = finalMessage; // Final message after glitching
+                clearInterval(glitchInterval);
+            }
+        }, 100);
     </script>
 
 </body>

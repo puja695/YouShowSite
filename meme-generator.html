@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>YOU-Themed Meme Generator (Creepy Text)</title>
+
+<!-- Google Font: Creepster -->
+<link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet" />
+
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #121212;
+    color: #eee;
+    margin: 0; padding: 20px;
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh;
+  }
+  h1 {
+    color: #cc0000;
+    margin-bottom: 10px;
+    user-select: none;
+  }
+  .meme-container {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 20px 0;
+    background: #000;
+    border: 4px solid #cc0000;
+    box-shadow: 0 0 15px #cc0000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  canvas {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    background: #000;
+  }
+  label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    user-select: none;
+  }
+  input[type="text"], input[type="file"] {
+    width: 400px;
+    padding: 8px;
+    font-size: 1em;
+    border: 2px solid #cc0000;
+    background: #222;
+    color: #eee;
+    outline: none;
+    border-radius: 4px;
+  }
+  input[type="file"] {
+    margin-top: 5px;
+    padding: 4px;
+  }
+  input::placeholder {
+    color: #999;
+  }
+  button {
+    margin-top: 15px;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    background: #cc0000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background: #990000;
+  }
+  footer {
+    margin-top: auto;
+    font-size: 0.8em;
+    color: #555;
+  }
+  .error-msg {
+    color: #ff4444;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<h1>YOU-Themed Meme Generator</h1>
+
+<label for="uploadImage">Upload your own image:</label>
+<input type="file" id="uploadImage" accept="image/*" aria-label="Upload your own image">
+
+<label for="imageUrl">Or enter image URL:</label>
+<input type="text" id="imageUrl" placeholder="Paste image URL here" aria-label="Image URL">
+
+<label for="topText">Top Text:</label>
+<input type="text" id="topText" placeholder="Enter top caption here" maxlength="50" />
+
+<label for="bottomText">Bottom Text:</label>
+<input type="text" id="bottomText" placeholder="Enter bottom caption here" maxlength="50" />
+
+<div class="meme-container">
+  <canvas id="memeCanvas" width="400" height="400"></canvas>
+</div>
+
+<button id="downloadBtn" aria-label="Download meme image">Download Meme</button>
+
+<div id="errorMsg" class="error-msg" role="alert" aria-live="assertive"></div>
+
+<footer>Made with obsession 💀 by YourName</footer>
+
+<!-- Background audio -->
+<audio id="bgMusic" autoplay loop>
+  <source src="music/you_theme.mp3" type="audio/mpeg" />
+  Your browser does not support the audio element.
+</audio>
+
+<script>
+const canvas = document.getElementById('memeCanvas');
+const ctx = canvas.getContext('2d');
+
+const uploadImageInput = document.getElementById('uploadImage');
+const imageUrlInput = document.getElementById('imageUrl');
+const topTextInput = document.getElementById('topText');
+const bottomTextInput = document.getElementById('bottomText');
+const downloadBtn = document.getElementById('downloadBtn');
+const errorMsg = document.getElementById('errorMsg');
+
+let currentImage = new Image();
+currentImage.crossOrigin = 'anonymous';
+
+function clearError() {
+  errorMsg.textContent = '';
+}
+
+function showError(msg) {
+  errorMsg.textContent = msg;
+}
+
+function drawMeme() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (!currentImage.complete || !currentImage.naturalWidth) {
+    // No image loaded yet or failed to load
+    ctx.fillStyle = '#222';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#888';
+    ctx.font = '20px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('Upload or enter image URL', canvas.width/2, canvas.height/2);
+    return;
+  }
+
+  // Draw base image scaled to fit canvas while maintaining aspect ratio
+  let iw = currentImage.naturalWidth;
+  let ih = currentImage.naturalHeight;
+  let cw = canvas.width;
+  let ch = canvas.height;
+  let scale = Math.min(cw/iw, ch/ih);
+  let iwScaled = iw * scale;
+  let ihScaled = ih * scale;
+  let dx = (cw - iwScaled) / 2;
+  let dy = (ch - ihScaled) / 2;
+
+  ctx.drawImage(currentImage, dx, dy, iwScaled, ihScaled);
+
+  // Text styling - creepy font, bright red, black stroke thinner for better pop
+  const fontSize = 36;
+  ctx.font = `normal ${fontSize}px 'Creepster', cursive`;
+  ctx.fillStyle = '#ff0000';  // bright red
+  ctx.strokeStyle = '#000000'; // black stroke
+  ctx.lineWidth = 3;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+
+  // Draw top text with stroke & fill with wrap
+  const topText = topTextInput.value.toUpperCase();
+  if (topText) {
+    wrapText(ctx, topText, canvas.width / 2, dy + 10, iwScaled - 20, fontSize + 6);
+  }
+
+  // Draw bottom text with stroke & fill with wrap
+  const bottomText = bottomTextInput.value.toUpperCase();
+  if (bottomText) {
+    ctx.textBaseline = 'bottom';
+    wrapText(ctx, bottomText, canvas.width / 2, dy + ihScaled - 10, iwScaled - 20, fontSize + 6, true);
+  }
+}
+
+// Helper to wrap text inside the canvas width
+function wrapText(context, text, x, y, maxWidth, lineHeight, fromBottom=false) {
+  let words = text.split(' ');
+  let line = '';
+  let lines = [];
+  for(let n = 0; n < words.length; n++) {
+    let testLine = line + words[n] + ' ';
+    let metrics = context.measureText(testLine);
+    let testWidth = metrics.width;
+    if(testWidth > maxWidth && n > 0) {
+      lines.push(line);
+      line = words[n] + ' ';
+    } else {
+      line = testLine;
+    }
+  }
+  lines.push(line);
+
+  if (fromBottom) {
+    for(let i = 0; i < lines.length; i++) {
+      let lineY = y - (lines.length - i - 1) * lineHeight;
+      context.fillText(lines[i], x, lineY);
+      context.strokeText(lines[i], x, lineY);
+    }
+  } else {
+    for(let i = 0; i < lines.length; i++) {
+      let lineY = y + i * lineHeight;
+      context.fillText(lines[i], x, lineY);
+      context.strokeText(lines[i], x, lineY);
+    }
+  }
+}
+
+function loadImageFromUpload(file) {
+  clearError();
+  if (!file) {
+    currentImage.src = '';
+    drawMeme();
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    currentImage = new Image();
+    currentImage.crossOrigin = 'anonymous';
+    currentImage.onload = function() {
+      drawMeme();
+    };
+    currentImage.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function loadImageFromUrl(url) {
+  clearError();
+  if (!url) {
+    currentImage.src = '';
+    drawMeme();
+    return;
+  }
+  currentImage = new Image();
+  currentImage.crossOrigin = 'anonymous';
+  currentImage.onload = function() {
+    drawMeme();
+  };
+  currentImage.onerror = function() {
+    showError('Failed to load image from URL. Please check the URL or try another.');
+    currentImage.src = '';
+    drawMeme();
+  };
+  currentImage.src = url;
+}
+
+uploadImageInput.addEventListener('change', e => {
+  if (uploadImageInput.files && uploadImageInput.files[0]) {
+    loadImageFromUpload(uploadImageInput.files[0]);
+    // Clear URL input since user uploaded a file
+    imageUrlInput.value = '';
+  }
+});
+
+imageUrlInput.addEventListener('input', () => {
+  // If user types URL, clear upload input
+  if (imageUrlInput.value.trim() !== '') {
+    uploadImageInput.value = '';
+    loadImageFromUrl(imageUrlInput.value.trim());
+  } else {
+    currentImage.src = '';
+    drawMeme();
+  }
+});
+
+topTextInput.addEventListener('input', drawMeme);
+bottomTextInput.addEventListener('input', drawMeme);
+
+downloadBtn.addEventListener('click', () => {
+  if (!currentImage.complete || !currentImage.naturalWidth) {
+    alert('Please upload an image or enter a valid image URL before downloading.');
+    return;
+  }
+  const link = document.createElement('a');
+  link.download = 'you_meme.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+});
+
+// Initialize empty canvas message
+drawMeme();
+
+// Background audio handling
+const bgMusic = document.getElementById('bgMusic');
+bgMusic.volume = 0.2;
+
+// Play on first user interaction (to bypass autoplay block)
+document.body.addEventListener('click', () => {
+  if (bgMusic.paused) {
+    bgMusic.play();
+  }
+}, { once: true });
+</script>
+
+</body>
+</html>
