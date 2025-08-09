@@ -10,7 +10,7 @@
             padding: 0;
             font-family: Arial, sans-serif;
             height: 100vh;
-            background: url('images/Loginimg1.jpg') no-repeat center center/cover; /* Corrected file extension */
+            background: url('images/Loginimg1.jpg') no-repeat center center/cover;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -27,7 +27,7 @@
 
         .login-box h2 {
             margin-bottom: 20px;
-            color: #0077b6; /* Blue */
+            color: #0077b6;
         }
 
         .login-box input {
@@ -40,13 +40,13 @@
         }
 
         .login-box input:focus {
-            border-color: #00b4d8; /* Light Blue */
+            border-color: #00b4d8;
         }
 
         .login-box button {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(45deg, #0077b6, #00b4d8, #90e0ef, #009688); /* Blue-Green theme */
+            background: linear-gradient(45deg, #0077b6, #00b4d8, #90e0ef, #009688);
             color: white;
             border: none;
             border-radius: 8px;
@@ -59,7 +59,6 @@
             background: linear-gradient(45deg, #009688, #00b4d8, #0077b6);
         }
 
-        /* Optional extra message styling */
         .message {
             display: none;
             font-size: 14px;
@@ -76,16 +75,24 @@
             <button type="submit">Welcome</button>
         </form>
         <div class="message" id="creepyMessage">
-            Ah… you again. I never forget a face—especially not yours.
+            Ahh here you are, waited too long...
         </div>
     </div>
 
     <script>
         function login(event) {
-            event.preventDefault(); // Prevent page refresh
+            event.preventDefault();
             let username = document.getElementById("username").value.trim();
+            let messageBox = document.getElementById("creepyMessage");
+
             if (username !== "") {
-                window.location.href = "home.html"; // Direct redirect
+                // Show message immediately
+                messageBox.style.display = "block";
+
+                // Redirect after 2 seconds
+                setTimeout(() => {
+                    window.location.href = "home.html";
+                }, 2000);
             } else {
                 alert("Please enter a username!");
             }
